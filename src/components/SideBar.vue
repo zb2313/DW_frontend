@@ -80,8 +80,8 @@ export default {
 
         {
           icon: "el-icon-tickets",
-          index: "/myplan",
-          title: "演员查询",
+          index: "/PeopleSearch",
+          title: "导演查询",
         },
         {
           icon: "el-icon-document-copy",
