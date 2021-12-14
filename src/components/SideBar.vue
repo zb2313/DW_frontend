@@ -85,8 +85,8 @@ export default {
         },
         {
           icon: "el-icon-document-copy",
-          index: "/AnnualReport",
-          title: "导演查询",
+          index: "/ActorSearch",
+          title: "演员查询",
         },
         {
           icon: "el-icon-s-comment",

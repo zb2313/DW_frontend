@@ -36,6 +36,11 @@ const routes =[
                 path:'/PeopleSearch',
                 name:'PeopleSearch',
                 component:()=>import('@/views/PeopleSearch')
+            },
+            {
+                path: '/ActorSearch',
+                name:'ActorSearch',
+                component:()=>import('@/views/ActorSearch')
             }
             ]
     },

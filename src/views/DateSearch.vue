@@ -1,7 +1,6 @@
 <template>
 <div>
 
-
   <el-radio v-model="searchType" label="1">年月日查询</el-radio>
   <el-radio v-model="searchType" label="2">季度查询</el-radio>
 
@@ -47,14 +46,12 @@
   <el-input style="width: 200px" v-if="yearSelected=checkedYMD.includes('year')||checkedYQ.includes('year')" v-model="year" placeholder="请输入年份" ></el-input>
   </div>
 
-  <div class="container" style="margin-top: 70px">
+  <div class="container" style="margin-top: 10px">
     <el-table
         :data="dataList.slice((currentPage-1)*pagesize,currentPage*pagesize)"
         border class="table" ref="multipleTable" header-cell-class-name="table-header">
       <el-table-column prop="asin" label="ASIN" align="center"  min-width="30"></el-table-column>
       <el-table-column prop="title" label="电影名" align="center"></el-table-column>
-      <el-table-column prop="actorsName" label="演员" align="center">
-      </el-table-column>
       <el-table-column prop="directorsName" label="导演" align="center">
       </el-table-column>
       <el-table-column prop="imdbScore" label="IMDB评分" align="center"></el-table-column>
@@ -65,12 +62,12 @@
           min-width="70"
       >
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="deleteLine(scope.row)"
-          >查看详细信息</el-button
-          >
+          <el-button type="primary" size="small" @click="getDetails(scope.row)">查看详细信息</el-button>
+          <el-button size="small" @click="getDetails(scope.row)">查看评价</el-button>
         </template>
       </el-table-column>
     </el-table>
+
     <el-pagination class="fy"
                    layout="prev, pager, next"
                    @current-change="current_change"
@@ -81,6 +78,12 @@
     <span>共{{dataList.length}}条搜索结果</span>
   </div>
 
+  <v-dialog
+      :detailsVisible.sync="detailsVisible"
+      :movieImage.sync="movieImage"
+      :movieDetails.sync="movieDetails"
+  >
+  </v-dialog>
 </div>
 </template>
 
@@ -95,12 +98,22 @@ import {
   getByYearMonth,
   getByYearQuarter
 } from "@/api/mysql/DateSearch";
+import {
+  getImage,
+  getByAsin
+} from "../api/mysql/MovieSearch";
+import vDialog from "../components/DetailsDialog.vue";
 
 export default {
   name: "DateSearch",
+  components:{
+    vDialog
+  },
   data()
   {
     return{
+      detailsVisible:false,
+
       total:1000,//默认数据总数
       pagesize:15,//每页的数据条数
       currentPage:1,//默认开始页面
@@ -127,7 +140,14 @@ export default {
       ymdOptions : ['year', 'month', 'day'],
       yqOptions:['year','quarter'],
 
-      isIndeterminate: true
+      isIndeterminate: true,
+
+      movieImage:"",
+      movieDetails:{
+        'dateTime':{
+          'year':'','month':'','day':''
+        }
+      },
 
     }
   },
@@ -140,6 +160,33 @@ export default {
     this.quarterOptions=this.dayOptions.slice(0,4)
   },
   methods:{
+    closeDetails()
+    {
+      this.detailsVisible=false
+      this.movieDetails={
+        'dateTime':{
+          'year':'','month':'','day':''
+        }
+      }
+      this.movieImage=""
+    },
+    getDetails(row) {
+      getImage(row.asin).then(
+          response=>{
+            this.movieImage=response.data
+            console.log(this.movieImage)
+          }
+      )
+      getByAsin(row.asin).then(
+          response=>{
+            this.movieDetails=response.data
+            this.movieDetails.actorsName=this.movieDetails.actorsName.replace('$',', ')
+            this.movieDetails.productVersion=this.movieDetails.productVersion.replace('$',', ')
+            console.log(response.data)
+          }
+      )
+      this.detailsVisible=true
+    },
     submitRequest()
     {
       if(this.searchType==1)
@@ -321,5 +368,21 @@ export default {
 }
 .title{
   height:100%;
+}
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple-dark {
+  background: #99a9bf;
+}
+.bg-purple {
+  background: #d3dce6;
+}
+.bg-purple-light {
+  background: #e5e9f2;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
 }
 </style>
