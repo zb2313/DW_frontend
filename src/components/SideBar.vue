@@ -89,6 +89,16 @@ export default {
           title: "演员查询",
         },
         {
+          icon: "el-icon-s-opportunity",
+          index: "/Statistics",
+          title: "统计数据",
+        },
+        {
+          icon: "el-icon-s-opportunity",
+          index: "/Graph",
+          title: "统计数据2",
+        },
+        {
           icon: "el-icon-s-comment",
           index: "/tabs",
           title: "通知",

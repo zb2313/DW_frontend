@@ -1,10 +1,11 @@
 import VueRouter from "vue-router";
 import Vue from "vue";
+
 Vue.use(VueRouter)
-const routes =[
+const routes = [
     {
-        path:'/',
-        redirect:'/login'
+        path: '/',
+        redirect: '/login'
     },
     {
         path: "/login",
@@ -15,9 +16,9 @@ const routes =[
         component: () => import( '@/views/Login')
     },
     {
-        path:"/Home",
-        name:"Home",
-        component:()=>import('../views/Home'),
+        path: "/Home",
+        name: "Home",
+        component: () => import('../views/Home'),
         children: [
             {
                 path: "/dashboard",
@@ -28,28 +29,38 @@ const routes =[
                 component: () => import( "@/views/DashBoard")
             },
             {
-                path:"/DateSearch",
-                name:"DateSearch",
-                component:()=>import("@/views/DateSearch")
+                path: "/DateSearch",
+                name: "DateSearch",
+                component: () => import("@/views/DateSearch")
             },
             {
-                path:'/PeopleSearch',
-                name:'PeopleSearch',
-                component:()=>import('@/views/PeopleSearch')
+                path: '/PeopleSearch',
+                name: 'PeopleSearch',
+                component: () => import('@/views/PeopleSearch')
             },
             {
                 path: '/ActorSearch',
-                name:'ActorSearch',
-                component:()=>import('@/views/ActorSearch')
+                name: 'ActorSearch',
+                component: () => import('@/views/ActorSearch')
+            },
+            {
+                path: '/Statistics',
+                name: 'Statistics',
+                component: () => import('@/views/Statistics')
+            },
+            {
+                path: '/Graph',
+                name: 'Graph',
+                component: () => import('@/views/Graph')
             }
-            ]
+        ]
     },
 
 ];
-const router=new VueRouter(
+const router = new VueRouter(
     {
         routes,
-        mode:'history'
+        mode: 'history'
     }
 );
 export default router;
