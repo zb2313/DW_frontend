@@ -1,11 +1,16 @@
 <template>
   <div>
-    <el-row :gutter="10">
+    <el-row :gutter="20">
       <el-col :span="12">
         <div id="myChart" :style="{width: '1000px', height: '800px'}"></div>
       </el-col>
-      <el-col :span="1" :offset="7">
-        <el-button >查询</el-button>
+      <el-col :span="1" style="position: absolute; right: 10%;">
+        <el-row>
+          <el-button @click="showStyleStatus">类别统计</el-button>
+        </el-row>
+        <el-row>
+          <el-button @click="showScoreStatus">分数统计</el-button>
+        </el-row>
       </el-col>
     </el-row>
 
@@ -13,41 +18,185 @@
 </template>
 
 <script>
+import {
+  getStyleStatus,
+  getImdbStatus,
+} from "@/api/mysql/MiscSearch";
+
 export default {
   name: "Statistics",
   data() {
     return {
       option: {
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
-        yAxis: {
-          type: 'value'
+        legend: {
+          top: 'bottom'
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            restore: {show: true},
+            saveAsImage: {show: true}
+          }
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
-            type: 'bar'
+            name: 'Nightingale Chart',
+            type: 'pie',
+            radius: [50, 250],
+            center: ['50%', '50%'],
+            roseType: 'radius',
+            itemStyle: {
+              borderRadius: 8
+            },
+            emphasis: {
+              label: {
+                show: true
+              }
+            },
+            data: []
           }
         ]
-      }
+      },
+      styleData: [],
     }
   },
   mounted() {
-    this.drawLine();
+    // this.drawLine();
   },
   methods: {
-    drawLine() {
+    drawLine(option) {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
-      myChart.setOption(this.option);
+      myChart.setOption(option,true);
+
+    },
+    async showStyleStatus() {
+      var myoption = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          top: 'bottom'
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: {show: true},
+            dataView: {show: true, readOnly: false},
+            restore: {show: true},
+            saveAsImage: {show: true}
+          }
+        },
+        series: [
+          {
+            name: 'Nightingale Chart',
+            type: 'pie',
+            radius: [50, 250],
+            center: ['50%', '50%'],
+            roseType: 'radius',
+            itemStyle: {
+              borderRadius: 8
+            },
+            emphasis: {
+              label: {
+                show: true
+              }
+            },
+            data: []
+          }
+        ]
+      }
+      await getStyleStatus().then(
+          response => {
+            console.log(response.data)
+            var dataObj = response.data
+            for (var i = 0; i < 20; i++) {
+              var item = {
+                value: dataObj[i].styleNum,
+                name: dataObj[i].styleName
+              }
+              myoption.series[0].data.push(item)
+            }
+          }
+      )
+      // 绘制图表
+      this.drawLine(myoption);
+    },
+    async showScoreStatus() {
+      var myoption = {
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          top: '5%',
+          left: 'center'
+        },
+        series: [
+          {
+            // name: 'Access From',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2
+            },
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '40',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+            ]
+          }
+        ]
+      }
+      var scoreData = []
+      for (var i = 0; i < 10; i++) {
+        await getImdbStatus(i).then(
+            response => {
+              // console.log(response.data)
+              scoreData.push(response.data.number)
+            }
+        )
+            .catch(function () {
+              i--
+            })
+      }
+      scoreData.push(0)
+      console.log(scoreData)
+      for (var j = 0; j < 10; j++) {
+        myoption.series[0].data.push({value: scoreData[j] - scoreData[j + 1], name: String(j) + '-' + String(j + 1)})
+      }
+
+      this.drawLine(myoption)
     }
   }
 }
 </script>
 
 <style scoped>
+.el-row {
+  margin-bottom: 20px;
+}
 
 </style>
