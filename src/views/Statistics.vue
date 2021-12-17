@@ -26,45 +26,7 @@ import {
 export default {
   name: "Statistics",
   data() {
-    return {
-      option: {
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-        legend: {
-          top: 'bottom'
-        },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: {show: true},
-            dataView: {show: true, readOnly: false},
-            restore: {show: true},
-            saveAsImage: {show: true}
-          }
-        },
-        series: [
-          {
-            name: 'Nightingale Chart',
-            type: 'pie',
-            radius: [50, 250],
-            center: ['50%', '50%'],
-            roseType: 'radius',
-            itemStyle: {
-              borderRadius: 8
-            },
-            emphasis: {
-              label: {
-                show: true
-              }
-            },
-            data: []
-          }
-        ]
-      },
-      styleData: [],
-    }
+    return {}
   },
   mounted() {
     // this.drawLine();
@@ -74,8 +36,7 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
-      myChart.setOption(option,true);
-
+      myChart.setOption(option, true);
     },
     async showStyleStatus() {
       var myoption = {
@@ -165,8 +126,7 @@ export default {
             labelLine: {
               show: false
             },
-            data: [
-            ]
+            data: []
           }
         ]
       }
