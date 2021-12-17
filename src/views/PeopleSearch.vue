@@ -55,6 +55,7 @@
         <el-table :data="directorRelation">
           <el-table-column prop="directorId" label="导演ID" align="center"  min-width="30"></el-table-column>
           <el-table-column prop="directorName" label="导演姓名" align="center"></el-table-column>
+          <el-table-column prop="copTime" label="合作次数" align="center"></el-table-column>
         </el-table>
         <div class="crumbs">
           <el-breadcrumb separator="/">
@@ -66,6 +67,7 @@
         <el-table :data="actorRelation">
           <el-table-column prop="actorId" label="演员ID" align="center"  min-width="30"></el-table-column>
           <el-table-column prop="actorName" label="演员姓名" align="center"></el-table-column>
+          <el-table-column prop="copTime" label="合作次数" align="center"></el-table-column>
         </el-table>
 
         <div class="crumbs">
@@ -85,8 +87,8 @@
               min-width="70"
           >
             <template slot-scope="scope">
-              <el-button type="primary" size="small" @click="getDetails(scope.row)">查看详细信息</el-button>
-              <el-button size="small" @click="getDetails(scope.row)">查看评价</el-button>
+              <el-button type="primary" size="small" @click="getMovieDetails(scope.row)">查看详细信息</el-button>
+              <el-button size="small" @click="getCommentDetails(scope.row)">查看评价</el-button>
             </template>
           </el-table-column>
 
@@ -96,7 +98,15 @@
     </el-col>
 
   </el-row>
-
+  <v-details
+      :detailsVisible.sync="detailsVisible"
+      :movieImage.sync="movieImage"
+      :movieDetails.sync="movieDetails"
+  ></v-details>
+  <v-comment
+      :commentVisible.sync="commentVisible"
+      :commentList.sync="commentList"
+  ></v-comment>
 </div>
 </template>
 
@@ -107,8 +117,15 @@ import {
     getDirectorActorRelation,
     getDirectorMovie,
 } from "@/api/mysql/DirectorSearch";
+import vComment from "../components/CommentDialog";
+import vDetails from "../components/DetailsDialog";
+import { getByTitle} from "../api/mysql/MovieSearch";
 export default {
   name: "PeopleSearch",
+  components:{
+    vComment,
+    vDetails
+  },
   data()
   {
     return{
@@ -125,10 +142,46 @@ export default {
       actorRelation:[],
 
       movies:[],
-      movieList:[]
+      movieList:[],
+
+
+      asin:'',
+      detailsVisible:false,
+      movieImage:{'url':''},
+      movieDetails:{
+        'dateTime':{
+          'year':'','month':'','day':''
+        }
+      },
+
+      commentList:[],
+      commentVisible:false,
+
     }
   },
   methods:{
+    getMovieDetails(row) {
+      let str=row.movie_name.replace(' ','%20')
+      getByTitle(str).then(
+          response=>{
+            this.asin=response.data.asin
+            this.movieImage.url=response.data.moviePic
+            console.log(this.movieImage.url)
+            // getByAsin(this.asin).then(
+            //     response=>{
+            //       this.movieDetails=response.data
+            //       this.movieDetails.actorsName=this.movieDetails.actorsName.replace('$',', ')
+            //       this.movieDetails.productVersion=this.movieDetails.productVersion.replace('$',', ')
+            //       this.commentList=this.movieDetails.divReviewEntityList
+            //       console.log(response.data)
+            //       console.log(this.commentList)
+            //     }
+            // )
+          }
+      )
+      this.detailsVisible=true
+    },
+
     current_change(currentPage){
       this.currentPage = currentPage;
     },

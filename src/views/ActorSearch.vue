@@ -55,6 +55,7 @@
             <el-table :data="directorRelation">
               <el-table-column prop="directorId" label="导演ID" align="center"  min-width="30"></el-table-column>
               <el-table-column prop="directorName" label="导演姓名" align="center"></el-table-column>
+              <el-table-column prop="'copTime" label="合作次数" align="center"></el-table-column>
             </el-table>
             <div class="crumbs">
               <el-breadcrumb separator="/">
@@ -66,6 +67,7 @@
             <el-table :data="actorRelation">
               <el-table-column prop="actorId" label="演员ID" align="center"  min-width="30"></el-table-column>
               <el-table-column prop="actorName" label="演员姓名" align="center"></el-table-column>
+              <el-table-column prop="'copTime" label="合作次数" align="center"></el-table-column>
             </el-table>
 
             <div class="crumbs">

@@ -13,6 +13,7 @@
           </div>
         </el-col>
         <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
+          <el-card>
           <el-form :data="movieDetails">
             <el-form-item>asin：{{movieDetails.asin}}</el-form-item>
             <el-form-item>电影名称：{{movieDetails.title}}</el-form-item>
@@ -23,6 +24,7 @@
             <el-form-item>版本：{{movieDetails.productVersion}}</el-form-item>
             <el-form-item>风格：{{movieDetails.styleName}}</el-form-item>
           </el-form>
+          </el-card>
         </el-col>
       </el-row>
     </el-form>

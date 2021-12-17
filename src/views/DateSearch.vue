@@ -63,7 +63,7 @@
       >
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="getDetails(scope.row)">查看详细信息</el-button>
-          <el-button size="small" @click="getDetails(scope.row)">查看评价</el-button>
+          <el-button size="small" @click="getComments(scope.row)">查看评价</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -78,12 +78,16 @@
     <span>共{{dataList.length}}条搜索结果</span>
   </div>
 
-  <v-dialog
+  <v-details
       :detailsVisible.sync="detailsVisible"
       :movieImage.sync="movieImage"
       :movieDetails.sync="movieDetails"
   >
-  </v-dialog>
+  </v-details>
+  <v-comments
+      :commentVisible.sync="commentVisible"
+      :commentList.sync="commentList"
+  ></v-comments>
 </div>
 </template>
 
@@ -102,12 +106,13 @@ import {
   getImage,
   getByAsin
 } from "../api/mysql/MovieSearch";
-import vDialog from "../components/DetailsDialog.vue";
-
+import vDetails from "../components/DetailsDialog.vue";
+import vComments from "../components/CommentDialog.vue"
 export default {
   name: "DateSearch",
   components:{
-    vDialog
+    vDetails,
+    vComments
   },
   data()
   {
@@ -149,6 +154,8 @@ export default {
         }
       },
 
+      commentList:[],
+      commentVisible:false
     }
   },
   created() {
@@ -170,6 +177,16 @@ export default {
       }
       this.movieImage=""
     },
+    getComments(row){
+
+      getByAsin(row.asin).then(
+          response=>{
+            this.commentList=response.data.divReviewEntityList
+            console.log(this.commentList)
+          }
+      )
+      this.commentVisible=true
+    },
     getDetails(row) {
       getImage(row.asin).then(
           response=>{
@@ -182,7 +199,9 @@ export default {
             this.movieDetails=response.data
             this.movieDetails.actorsName=this.movieDetails.actorsName.replace('$',', ')
             this.movieDetails.productVersion=this.movieDetails.productVersion.replace('$',', ')
+            this.commentList=this.movieDetails.divReviewEntityList
             console.log(response.data)
+            console.log(this.commentList)
           }
       )
       this.detailsVisible=true
