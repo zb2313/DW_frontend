@@ -15,3 +15,30 @@ export const getByStyleIdType = (style, id, type) => {
         `${geturl}`
     )
 }
+export const getByStyleYear = (year, style) => {
+    let geturl = base + "year-and-style-name?year=" + year + "&styleName=" + style
+    console.log(geturl)
+    return axios.get(
+        `${geturl}`
+    )
+}
+export const getByStyleAvg1 = (style) => {
+    let geturl = base + "style-avg/" + style
+    console.log(geturl)
+    return axios.get(
+        `${geturl}`
+    )
+}
+
+export const getByStyleAvg2 = (style) => {
+    let geturl = base + "style-avg-motion/" + style
+    console.log(geturl)
+    return axios.get(
+        `${geturl}`
+    )
+}
+
+
+
+
+
