@@ -55,7 +55,7 @@
             <el-table :data="directorRelation">
               <el-table-column prop="directorId" label="导演ID" align="center"  min-width="30"></el-table-column>
               <el-table-column prop="directorName" label="导演姓名" align="center"></el-table-column>
-              <el-table-column prop="'copTime" label="合作次数" align="center"></el-table-column>
+              <el-table-column prop="copTime" label="合作次数" align="center"></el-table-column>
             </el-table>
             <div class="crumbs">
               <el-breadcrumb separator="/">
@@ -67,7 +67,7 @@
             <el-table :data="actorRelation">
               <el-table-column prop="actorId" label="演员ID" align="center"  min-width="30"></el-table-column>
               <el-table-column prop="actorName" label="演员姓名" align="center"></el-table-column>
-              <el-table-column prop="'copTime" label="合作次数" align="center"></el-table-column>
+              <el-table-column prop="copTime" label="合作次数" align="center"></el-table-column>
             </el-table>
 
             <div class="crumbs">
@@ -77,18 +77,36 @@
                 </el-breadcrumb-item>
               </el-breadcrumb>
             </div>
-            <el-table>
-              <el-table-column>
-
+            <el-table :data="movieList">
+              <el-table-column prop="movie_name" label="电影名" align="center">
               </el-table-column>
-
+              <el-table-column
+                  fixed="right"
+                  align="center"
+                  label="操作"
+                  min-width="70"
+              >
+                <template slot-scope="scope">
+                  <el-button type="primary" size="small" @click="getMovieDetails(scope.row)">查看详细信息</el-button>
+                  <el-button size="small" @click="getComments(scope.row)">查看评价</el-button>
+                </template>
+              </el-table-column>
             </el-table>
+
           </el-card>
         </div>
       </el-col>
 
     </el-row>
-
+    <v-details
+        :detailsVisible.sync="detailsVisible"
+        :movieImage.sync="movieImage"
+        :movieDetails.sync="movieDetails"
+    ></v-details>
+    <v-comment
+        :commentVisible.sync="commentVisible"
+        :commentList.sync="commentList"
+    ></v-comment>
   </div>
 </template>
 
@@ -98,8 +116,15 @@ import {
   getActorId, getActorMovie,
   getActorRelation
 } from "../api/mysql/ActorSearch";
+import {getByAsin, getByTitle} from "../api/mysql/MovieSearch";
+import vDetails from "../components/DetailsDialog";
+import vComment from "../components/CommentDialog";
 export default {
   name: "PeopleSearch",
+  components:{
+    vDetails,
+    vComment
+  },
   data()
   {
     return{
@@ -115,10 +140,69 @@ export default {
       directorRelation:[],
       actorRelation:[],
 
-      movies:[]
+      movies:[],
+      movieList:[],
+
+      asin:'',
+      detailsVisible:false,
+      movieImage:{'url':''},
+      movieDetails:{
+        'dateTime':{
+          'year':'','month':'','day':''
+        }
+      },
+
+      commentList:[],
+      commentVisible:false,
     }
   },
   methods:{
+
+    getComments(row){
+      if(this.commentList!=[]) {
+        let str=row.movie_name.replaceAll(' ','%20')
+        getByTitle(str).then(
+            response=>{
+              this.asin=response.data[0].asin
+              this.movieImage.url=response.data[0].moviePic
+              console.log(this.asin,this.movieImage.url)
+              getByAsin(this.asin).then(
+                  response=>{
+                    this.movieDetails=response.data
+                    this.movieDetails.actorsName=this.movieDetails.actorsName.replace('$',', ')
+                    this.movieDetails.productVersion=this.movieDetails.productVersion.replace('$',', ')
+                    this.commentList=this.movieDetails.divReviewEntityList
+                    console.log(response.data)
+                    console.log(this.commentList)
+                  }
+              )
+            }
+        )
+      }
+      this.commentVisible=true
+    },
+    getMovieDetails(row) {
+      let str=row.movie_name.replaceAll(' ','%20')
+      getByTitle(str).then(
+          response=>{
+            this.asin=response.data[0].asin
+            this.movieImage.url=response.data[0].moviePic
+            console.log(this.asin,this.movieImage.url)
+            getByAsin(this.asin).then(
+                response=>{
+                  this.movieDetails=response.data
+                  this.movieDetails.actorsName=this.movieDetails.actorsName.replace('$',', ')
+                  this.movieDetails.productVersion=this.movieDetails.productVersion.replace('$',', ')
+                  this.commentList=this.movieDetails.divReviewEntityList
+                  console.log(response.data)
+                  console.log(this.commentList)
+                }
+            )
+          }
+      )
+      this.detailsVisible=true
+    },
+
     current_change(currentPage){
       this.currentPage = currentPage;
     },
@@ -157,10 +241,14 @@ export default {
           response=>{
             this.movies=response.data
             this.movies=this.movies[0].movie_name.split('$')
+            for(let i=0;i<this.movies.length;i++) {
+              this.movieList.push(
+                  {"id":1,"movie_name":this.movies[i]}
+              )
+            }
             console.log(this.movies)
           }
       )
-
 
     }
 

@@ -9,6 +9,7 @@ export const getByAsin = params=>{
 }
 export const getByTitle = params=>{
     let geturl=base+'movie/complete-title/'+params;
+    geturl.replace(' ','%20')
     console.log(geturl)
     return axios.get(
         `${geturl}`

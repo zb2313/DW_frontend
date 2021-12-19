@@ -4,6 +4,7 @@
              :visible="commentVisible"
              width="840px"
   >
+    <el-button @click="closeDialog">关闭</el-button>
   <ul>
     <li v-for="(item,index) in commentList" :key="index">
       <el-card :data="item">
@@ -12,12 +13,11 @@
         <div>
         {{item.text}}<br>
         {{item.date}}<br>
-        <span style="font-style: oblique">feelings:{{item.sentiment}} score:{{item.score}} helpfulNum:{{item.helpfulNum}}</span>
+        <span style="font-style: oblique;font-size: 14px">feelings:{{item.sentiment}} score:{{item.score}} helpfulNum:{{item.helpfulNum}}</span>
         </div>
       </el-card>
     </li>
   </ul>
-    <el-button @click="closeDialog">关闭</el-button>
   </el-dialog>
 </div>
 </template>

@@ -44,14 +44,24 @@ const routes = [
                 component: () => import('@/views/ActorSearch')
             },
             {
-                path: '/Statistics',
-                name: 'Statistics',
-                component: () => import('@/views/Statistics')
-            },
-            {
                 path: '/Graph',
                 name: 'Graph',
                 component: () => import('@/views/Graph')
+            },
+            {
+                path: '/Cooperation',
+                name:'cooperation',
+                component:()=>import('@/views/Cooperation.vue')
+            },
+            {
+                path:'/TraceSource',
+                name:'TraceSource',
+                component:()=>import('@/views/TraceSource.vue')
+            },
+            {
+                path:'/ImdbRank',
+                name:'ImdbRank',
+                component:()=>import('@/views/ImdbRank.vue')
             }
         ]
     },

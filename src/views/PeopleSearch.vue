@@ -88,7 +88,7 @@
           >
             <template slot-scope="scope">
               <el-button type="primary" size="small" @click="getMovieDetails(scope.row)">查看详细信息</el-button>
-              <el-button size="small" @click="getCommentDetails(scope.row)">查看评价</el-button>
+              <el-button size="small" @click="getComments(scope.row)">查看评价</el-button>
             </template>
           </el-table-column>
 
@@ -119,7 +119,7 @@ import {
 } from "@/api/mysql/DirectorSearch";
 import vComment from "../components/CommentDialog";
 import vDetails from "../components/DetailsDialog";
-import { getByTitle} from "../api/mysql/MovieSearch";
+import { getByAsin,getByTitle} from "../api/mysql/MovieSearch";
 export default {
   name: "PeopleSearch",
   components:{
@@ -160,23 +160,46 @@ export default {
     }
   },
   methods:{
+    getComments(row){
+      if(this.commentList!=[]) {
+        let str=row.movie_name.replaceAll(' ','%20')
+        getByTitle(str).then(
+            response=>{
+              this.asin=response.data[0].asin
+              this.movieImage.url=response.data[0].moviePic
+              console.log(this.asin,this.movieImage.url)
+              getByAsin(this.asin).then(
+                  response=>{
+                    this.movieDetails=response.data
+                    this.movieDetails.actorsName=this.movieDetails.actorsName.replace('$',', ')
+                    this.movieDetails.productVersion=this.movieDetails.productVersion.replace('$',', ')
+                    this.commentList=this.movieDetails.divReviewEntityList
+                    console.log(response.data)
+                    console.log(this.commentList)
+                  }
+              )
+            }
+        )
+      }
+      this.commentVisible=true
+    },
     getMovieDetails(row) {
-      let str=row.movie_name.replace(' ','%20')
+      let str=row.movie_name.replaceAll(' ','%20')
       getByTitle(str).then(
           response=>{
-            this.asin=response.data.asin
-            this.movieImage.url=response.data.moviePic
-            console.log(this.movieImage.url)
-            // getByAsin(this.asin).then(
-            //     response=>{
-            //       this.movieDetails=response.data
-            //       this.movieDetails.actorsName=this.movieDetails.actorsName.replace('$',', ')
-            //       this.movieDetails.productVersion=this.movieDetails.productVersion.replace('$',', ')
-            //       this.commentList=this.movieDetails.divReviewEntityList
-            //       console.log(response.data)
-            //       console.log(this.commentList)
-            //     }
-            // )
+            this.asin=response.data[0].asin
+            this.movieImage.url=response.data[0].moviePic
+            console.log(this.asin,this.movieImage.url)
+            getByAsin(this.asin).then(
+                response=>{
+                  this.movieDetails=response.data
+                  this.movieDetails.actorsName=this.movieDetails.actorsName.replace('$',', ')
+                  this.movieDetails.productVersion=this.movieDetails.productVersion.replace('$',', ')
+                  this.commentList=this.movieDetails.divReviewEntityList
+                  console.log(response.data)
+                  console.log(this.commentList)
+                }
+            )
           }
       )
       this.detailsVisible=true

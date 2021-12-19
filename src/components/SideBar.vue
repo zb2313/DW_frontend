@@ -90,39 +90,23 @@ export default {
         },
         {
           icon: "el-icon-s-opportunity",
-          index: "/Statistics",
-          title: "统计数据",
-        },
-        {
-          icon: "el-icon-s-opportunity",
           index: "/Graph",
           title: "统计数据2",
         },
         {
           icon: "el-icon-s-comment",
-          index: "/tabs",
-          title: "通知",
+          index: "/Cooperation",
+          title: "合作查询（neo4j）",
         },
         {
           icon: "el-icon-s-promotion",
-          index: "3",
-          title: "编辑与上传",
-          subs: [
-            {
-              index: "/form",
-              title: "修改个人信息",
-            },
-            {
-              icon: "el-icon-edit-outline",
-              index: "/travelplan",
-              title: "创建攻略",
-            },
-          ],
+          index: "/TraceSource",
+          title: "溯源查询",
         },
         {
           icon: "el-icon-s-management",
-          index: "/Favorites",
-          title: "收藏",
+          index: "/ImdbRank",
+          title: "Imdb榜单",
         },
         {
           icon: "el-icon-s-check",

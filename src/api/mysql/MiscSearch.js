@@ -15,3 +15,10 @@ export const getImdbStatus = (score) => {
         `${geturl}`
     )
 }
+export const getImdbRank=()=>{
+    let geturl = base + 'misc/top100-imdb';
+    console.log(geturl)
+    return axios.get(
+        `${geturl}`
+    )
+}
