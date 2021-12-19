@@ -7,14 +7,14 @@
     <el-button @click="closeDialog">关闭</el-button>
     <el-form ref="login" label-width="80px" class="ms-content">
 
-      <el-row :gutter="100">
+      <el-row :gutter="30">
         <el-col :xs="4" :sm=6 :md="8" :lg="9" :xl="8">
           <div class="grid-content bg-purple-light">
             <img :src="movieImage.url">
           </div>
         </el-col>
         <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11" style="float: right">
-          <el-card>
+          <el-card style="width:350px;">
           <el-form :data="movieDetails">
             <el-form-item>asin：{{movieDetails.asin}}</el-form-item>
             <el-form-item>电影名称：{{movieDetails.title}}</el-form-item>
