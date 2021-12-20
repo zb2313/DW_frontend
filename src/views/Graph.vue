@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <el-row :gutter="20">
       <el-col :span="12">
         <div id="myChart" :style="{width: '1000px', height: '800px'}"></div>
@@ -64,7 +63,7 @@ export default {
     return {
       radio1: '1',
       radio2: '1',
-      idInput: '',
+      idInput: 46694,
       yearOrStyleInput: '',
       value: '',
       options: [
@@ -112,6 +111,9 @@ export default {
         "All%20Fox%20Titles",
       ],
     };
+  },
+  created() {
+    this.showGraph1()
   },
   methods: {
     drawLine(option) {

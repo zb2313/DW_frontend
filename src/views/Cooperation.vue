@@ -1,15 +1,16 @@
 <template>
 <div>
-  <el-button @click="getInfo"></el-button>
-  <el-table :data="aandd">
-    <el-table-column prop="b.name" label="a"></el-table-column>
-    <el-table-column prop="r.num" label="次数"></el-table-column>
-    <el-table-column prop="a.name" label="b"></el-table-column>
+  <el-button @click="getDAInfo">导演与演员合作次数排行</el-button>
+  <el-button @click="getAAInfo">演员与演员合作次数排行</el-button>
+  <el-button @click="getDDInfo">导演与导演合作次数排行</el-button>
+  <el-card >
+  <el-table :data="relationList"
+            style="width: 500px">
+    <el-table-column prop="bname" label="a"></el-table-column>
+    <el-table-column prop="rnum" label="次数"></el-table-column>
+    <el-table-column prop="aname" label="b"></el-table-column>
   </el-table>
-  {{aanda}}
-  {{danda}}
-  {{aandd}}
-  {{dandd}}
+  </el-card>
 </div>
 </template>
 
@@ -18,45 +19,37 @@ import {
     getDirectorActor,
     getDirectorDirector,
     getActorActor,
-    getActorDirecctor
 } from "../api/neo4j/collaborationSearch";
 export default {
   name: "Cooperation",
   data(){
     return{
-      aanda:[],
-      aandd:[],
-      danda:[],
-      dandd:[]
+      relationList:[],
     }
   },
   methods:{
-    getInfo(){
+    getDDInfo(){
       getDirectorDirector().then(
           response=>{
-            this.dandd=response.data
-            console.log(this.dandd[0].a)
+            this.relationList=response.data
+            console.log(this.relationList)
           }
       )
-      getActorDirecctor().then(
-          response=>{
-            this.aandd=response.data
-            console.log(this.aandd)
-          }
-      )
+    },
+    getAAInfo(){
       getActorActor().then(
           response=>{
-            this.aanda=response.data
-            console.log(this.aanda)
+            this.relationList=response.data
           }
       )
+    },
+    getDAInfo(){
       getDirectorActor().then(
           response=>{
-            this.danda=response.data
-            console.log(this.danda)
+            this.relationList=response.data
           }
       )
-    }
+    },
   }
 }
 </script>

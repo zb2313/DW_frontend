@@ -1,8 +1,8 @@
 <template>
 <div>
 
-  <el-radio v-model="searchType" label="1">年月日查询</el-radio>
-  <el-radio v-model="searchType" label="2">季度查询</el-radio>
+  <el-radio v-model="searchType" label=1>年月日查询</el-radio>
+  <el-radio v-model="searchType" label=2>季度查询</el-radio>
 
   <el-card v-if="searchType==1" style="width: 300px" >
   <el-checkbox-group  v-model="checkedYMD">
@@ -130,14 +130,14 @@ export default {
       quarterOptions:[],
       day:'',
       daySelected:false,
-      year:'',
-      yearSelected:false,
+      year:2000,
+      yearSelected:true,
       month:'',
       monthSelected:false,
       quarter:'',
       quarterSelected:false,
 
-      searchType:'',//查找方式 年月日还是季度
+      searchType:1,//查找方式 年月日还是季度
 
       checkAll: false,
       checkedYMD: [],
@@ -165,6 +165,7 @@ export default {
     }
     this.monthOptinos=this.dayOptions.slice(0,12)
     this.quarterOptions=this.dayOptions.slice(0,4)
+    this.submitRequest()
   },
   methods:{
     closeDetails()
