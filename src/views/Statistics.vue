@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div style="width: 700px">
     <el-row :gutter="20">
       <el-col :span="12">
         <div id="myChart" :style="{width: '1000px', height: '800px'}"></div>
       </el-col>
-      <el-col :span="1" style="position: absolute; right: 10%;">
+      <el-col :span="1" style="position: absolute; left: 10%;">
         <el-row>
           <el-button @click="showTraceStatus">溯源统计</el-button>
         </el-row>
@@ -14,6 +14,7 @@
         <el-row>
           <el-button @click="showScoreStatus">分数统计</el-button>
         </el-row>
+        <el-row>非电影数据</el-row>
       </el-col>
     </el-row>
 
@@ -36,6 +37,9 @@ export default {
   },
   mounted() {
     // this.drawLine();
+  },
+  created() {
+    this.showStyleStatus()
   },
   methods: {
     drawLine(option) {

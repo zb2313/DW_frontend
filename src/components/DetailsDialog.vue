@@ -2,15 +2,15 @@
 <div>
   <el-dialog title="电影详细信息"
              :visible="detailsVisible"
-             width="840px"
+             width="900px"
              >
     <el-button @click="closeDialog">关闭</el-button>
     <el-form ref="login" label-width="80px" class="ms-content">
 
-      <el-row :gutter="30">
+      <el-row :gutter="10">
         <el-col :xs="4" :sm=6 :md="8" :lg="9" :xl="8">
           <div class="grid-content bg-purple-light">
-            <img :src="movieImage.url">
+            <img style="float: right" :src="movieImage.url">
           </div>
         </el-col>
         <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11" style="float: right">

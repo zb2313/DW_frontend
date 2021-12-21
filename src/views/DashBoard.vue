@@ -1,16 +1,13 @@
 <template>
   <div class="about">
-<el-card><Statistics></Statistics></el-card>
-    <el-card><Graph></Graph></el-card>
+<el-card  style="width: 1100px;margin: 0 auto"><Statistics></Statistics></el-card><br>
   </div>
 </template>
 <script>
 import Statistics from "./Statistics";
-import Graph from "./Graph";
 export default {
   components: {
     Statistics,
-    Graph
   },
   data(){
     return{
@@ -19,8 +16,6 @@ export default {
     }
   },
   created(){
-    // const tagsList =
-    //     this.$store.state.tagsList.map((item) => item.name);
   }
 
 };

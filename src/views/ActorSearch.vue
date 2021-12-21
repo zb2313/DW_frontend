@@ -156,11 +156,15 @@ export default {
       commentVisible:false,
     }
   },
+  created() {
+    this.getActorID()
+  },
   methods:{
 
     getComments(row){
       if(this.commentList!=[]) {
         let str=row.movie_name.replaceAll(' ','%20')
+        str=str.replaceAll('&','%26')
         getByTitle(str).then(
             response=>{
               this.asin=response.data[0].asin
@@ -183,6 +187,7 @@ export default {
     },
     getMovieDetails(row) {
       let str=row.movie_name.replaceAll(' ','%20')
+      str=str.replaceAll('&','%26')
       getByTitle(str).then(
           response=>{
             this.asin=response.data[0].asin
