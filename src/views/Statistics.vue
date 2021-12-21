@@ -6,6 +6,9 @@
       </el-col>
       <el-col :span="1" style="position: absolute; right: 10%;">
         <el-row>
+          <el-button @click="showTraceStatus">溯源统计</el-button>
+        </el-row>
+        <el-row>
           <el-button @click="showStyleStatus">类别统计</el-button>
         </el-row>
         <el-row>
@@ -22,7 +25,10 @@ import {
   getStyleStatus,
   getImdbStatus,
 } from "@/api/mysql/MiscSearch";
-
+import
+{
+  getNonMovie,
+}from "@/api/mysql/TraceSourceSearch";
 export default {
   name: "Statistics",
   data() {
@@ -37,6 +43,50 @@ export default {
       let myChart = this.$echarts.init(document.getElementById('myChart'))
       // 绘制图表
       myChart.setOption(option, true);
+    },
+    async showTraceStatus() {
+      var myoption = {
+        title: {
+          text: '溯源情况',
+          subtext: '',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          bottom: 10,
+          left: 'center',
+          // data: ['CityA', 'CityB', 'CityD', 'CityC', 'CityE']
+        },
+        series: [
+          {
+            type: 'pie',
+            radius: '65%',
+            center: ['50%', '50%'],
+            selectedMode: 'single',
+            data: [
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+      await getNonMovie().then(
+          response => {
+
+            myoption.series[0].data.push({value: response.data.tolMovie, name:"电影数据"})
+            myoption.series[0].data.push({value: response.data.tolAsin - response.data.tolMovie, name:"非电影数据"})
+          }
+      )
+
+      this.drawLine(myoption);
     },
     async showStyleStatus() {
       var myoption = {
