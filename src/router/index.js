@@ -62,6 +62,11 @@ const routes = [
                 path:'/ImdbRank',
                 name:'ImdbRank',
                 component:()=>import('@/views/ImdbRank.vue')
+            },
+            {
+              path: '/AsinDetails',
+              name:'AsinDetails',
+              component:()=>import('@/views/AsinDetails.vue')
             }
         ]
     },

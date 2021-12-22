@@ -108,6 +108,11 @@ export default {
           index: "/ImdbRank",
           title: "Imdb榜单",
         },
+        {
+          icon: "el-icon-s-management",
+          index: "/AsinDetails",
+          title: "asin详细信息",
+        }
       ],
       onRoutes: "",
     };
