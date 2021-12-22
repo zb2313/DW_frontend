@@ -96,7 +96,12 @@ export default {
         {
           icon: "el-icon-s-comment",
           index: "/Cooperation",
-          title: "合作查询（neo4j）",
+          title: "合作查询比较（neo4j）",
+        },
+        {
+          icon: "el-icon-s-comment",
+          index: "/DateCompare",
+          title: "日期查询比较",
         },
         {
           icon: "el-icon-s-promotion",

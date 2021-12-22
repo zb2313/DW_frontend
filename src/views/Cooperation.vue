@@ -42,7 +42,7 @@ import {
     getDirectorActor,
     getDirectorDirector,
     getActorActor,
-} from "../api/neo4j/collaborationSearch";
+} from "../api/neo4j/CollaborationSearch";
 import {
     getDirectors100,
     getDirectorActor100,

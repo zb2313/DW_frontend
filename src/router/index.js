@@ -67,6 +67,11 @@ const routes = [
               path: '/AsinDetails',
               name:'AsinDetails',
               component:()=>import('@/views/AsinDetails.vue')
+            },
+            {
+                path: '/DateCompare',
+                name:'DateCompare',
+                component:()=>import('@/views/DateCompare.vue')
             }
         ]
     },
