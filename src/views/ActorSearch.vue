@@ -44,7 +44,7 @@
       <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
         <div class="grid-content bg-purple">
           <el-card>
-            导演ID:{{selectedActorId}} 导演姓名:{{selectedActorName}}
+            演员ID:{{selectedActorId}} 演员姓名:{{selectedActorName}}
             <div class="crumbs">
               <el-breadcrumb separator="/">
                 <el-breadcrumb-item>

@@ -11,7 +11,7 @@
     月<el-input v-model="monthM" style="width: 150px"></el-input>
     日<el-input v-model="dayM" style="width: 150px"></el-input>
 
-    <el-table>
+    <el-table :data="movielistM">
       <el-table-column prop="asin" label="asin"></el-table-column>
       <el-table-column prop="title" label="电影名"></el-table-column>
     </el-table>
@@ -25,9 +25,9 @@
     年<el-input v-model="yearN" style="width: 150px"></el-input>
     月<el-input v-model="monthN" style="width: 150px"></el-input>
     日<el-input v-model="dayN" style="width: 150px"></el-input>
-    <el-table>
-      <el-table-column prop="asin" label="asin"></el-table-column>
-      <el-table-column prop="title" label="电影名"></el-table-column>
+    <el-table :data="movielistN">
+      <el-table-column prop="aname" label="电影名"></el-table-column>
+      <el-table-column prop="dir" label="导演"></el-table-column>
     </el-table>
   </el-col>
   <el-col :span=8>
@@ -39,7 +39,7 @@
     年<el-input v-model="yearH" style="width: 150px"></el-input>
     月<el-input v-model="monthH" style="width: 150px"></el-input>
     日<el-input v-model="dayH" style="width: 150px"></el-input>
-    <el-table>
+    <el-table :data="movielistH">
       <el-table-column prop="asin" label="asin"></el-table-column>
       <el-table-column prop="title" label="电影名"></el-table-column>
     </el-table>
@@ -108,7 +108,7 @@ export default {
     },
     getByYMDN(){
       let sendtime=(new Date()).getTime()
-      getByYearMonthDayN(this.yearN,this.yearN,this.dayN).then(
+      getByYearMonthDayN(this.yearN,this.monthN,this.dayN).then(
           response=>{
             let gettime=(new Date()).getTime()
             this.timeN=(gettime-sendtime)/1000
