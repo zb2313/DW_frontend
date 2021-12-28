@@ -14,7 +14,7 @@
         <el-row>
           <el-button @click="showScoreStatus">分数统计</el-button>
         </el-row>
-        <el-row>非电影数据</el-row>
+
       </el-col>
     </el-row>
 
