@@ -1,4 +1,4 @@
-# javatest
+# DataWarehouse Frontend
 
 ## Project setup
 ```
