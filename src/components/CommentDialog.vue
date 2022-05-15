@@ -37,7 +37,6 @@ export default {
     closeDialog(){
       //this.detailsVisible=false
       this.$emit(`update:commentVisible`,false)
-
     }
   },
   watch:{
